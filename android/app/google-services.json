@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "695067116129",
+    "project_id": "nexmat-dev-f9a61",
+    "storage_bucket": "nexmat-dev-f9a61.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:695067116129:android:7c3541b9a768a924b86020",
+        "android_client_info": {
+          "package_name": "com.kumarsunil17.nexmat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "695067116129-8vmblrvu82hefjcgs4asuthm0rjurs96.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kumarsunil17.nexmat",
+            "certificate_hash": "662c1e161852db34d31264c6fab0bc678e2f2cb1"
+          }
+        },
+        {
+          "client_id": "695067116129-0jc3p66l2f1p9u8rk1mrqi22mf9pbcdd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArgguKNacXwrYxctkfYh3K8zg31ExTn1E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "695067116129-0jc3p66l2f1p9u8rk1mrqi22mf9pbcdd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "695067116129-8490a0s45fop48ljl6uot27je1sbitsm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.kumarsunil17.nexmat"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
