@@ -1,6 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:nexmat/pages/splash/splash_screen.dart';
+import 'package:nexmat/utils/shared_preference_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+import 'app_configs/app_page_routes.dart';
+import 'app_configs/app_theme.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  SharedPreferenceHelper.preferences = await SharedPreferences.getInstance();
   runApp(const MyApp());
 }
 
@@ -9,59 +20,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+    return GetMaterialApp(
+      title: 'Nexmat',
+      debugShowCheckedModeBanner: false,
+      themeMode: ThemeMode.light,
+      theme: AppThemes.lightTheme,
+      darkTheme: AppThemes.darkTheme,
+      initialRoute: SplashPage.routeName,
+      getPages: AppPages.pages,
     );
   }
 }

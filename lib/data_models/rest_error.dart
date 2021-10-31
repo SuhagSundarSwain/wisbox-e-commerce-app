@@ -1,4 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 
 ///
 /// Created by Sunil Kumar from Boiler plate
@@ -37,4 +41,17 @@ class RestError {
 class NoInternetError {
   @override
   String toString() => 'No internet connection.';
+}
+String parseFirebaseError(dynamic error){
+  if(error is FirebaseException){
+    return error.message??"Some error occurred";
+  }
+  else if(error is SocketException){
+    return error.message;
+  }
+  else if(error is PlatformException){
+    return error.message??"Some error occurred";
+  }else {
+    return "Some error occurred";
+  }
 }

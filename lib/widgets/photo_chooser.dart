@@ -96,8 +96,9 @@ class PhotoChooser extends StatelessWidget {
         ImageCropper.cropImage(
                 sourcePath: file.path,
                 maxWidth: 500,
-                cropStyle: CropStyle.circle,
+                cropStyle: CropStyle.rectangle,
                 maxHeight: 500,
+                compressQuality: 75,
                 aspectRatioPresets: [
                   CropAspectRatioPreset.square,
                 ],
@@ -108,7 +109,7 @@ class PhotoChooser extends StatelessWidget {
                   initAspectRatio: CropAspectRatioPreset.square,
                   lockAspectRatio: true,
                 ),
-                iosUiSettings: IOSUiSettings(
+                iosUiSettings: const IOSUiSettings(
                     minimumAspectRatio: 1.0,
                     title: 'Crop Your Image',
                     aspectRatioLockEnabled: true,

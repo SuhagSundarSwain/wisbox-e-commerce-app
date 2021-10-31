@@ -21,8 +21,6 @@ dependencies:
   image_cropper: ^1.4.1
   image_picker: ^0.8.4+3
   intl: ^0.17.0
-  location: ^4.3.0
-  permission_handler: ^8.2.5
   pin_code_fields: ^7.3.0
   shared_preferences: ^2.0.8
   url_launcher: ^6.0.2
@@ -32,6 +30,11 @@ dependencies:
   cloud_firestore: ^2.5.4
   firebase_storage: ^10.0.6
   firebase_core: ^1.8.0
+  fluttertoast: ^8.0.8
+  mapbox_search: ^3.0.1+1
+  location: ^4.3.0
+  google_sign_in: ^5.2.1
+  flutter_facebook_auth: ^3.5.3
 
 dev_dependencies:
   flutter_test:
@@ -41,6 +44,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
   assets:
     - assets/
     - assets/icons/

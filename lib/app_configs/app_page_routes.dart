@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 import 'package:nexmat/pages/dashboard/dashboard_page.dart';
 import 'package:nexmat/pages/intro/intro_page.dart';
 import 'package:nexmat/pages/login/login_page.dart';
+import 'package:nexmat/pages/onboarding/onboard_shop_details.dart';
+import 'package:nexmat/pages/onboarding/select_location_page.dart';
 import 'package:nexmat/pages/register/register_otp_verification_page.dart';
 import 'package:nexmat/pages/register/register_page.dart';
 import 'package:nexmat/pages/splash/splash_screen.dart';
@@ -19,6 +21,12 @@ class AppPages {
     GetPage(
         name: RegisterOtpVerificationPage.routeName,
         page: () => const RegisterOtpVerificationPage()),
+    GetPage(
+        name: OnboardShopDetails.routeName,
+        page: () => const OnboardShopDetails()),
+    GetPage(
+        name: SelectLocationPage.routeName,
+        page: () => const SelectLocationPage()),
     GetPage(
         name: DashboardPage.routeName,
         page: () => const DashboardPage(),

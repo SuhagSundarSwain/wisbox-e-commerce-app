@@ -1,9 +1,13 @@
 import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:nexmat/app_configs/app_assets.dart';
 import 'package:nexmat/pages/dashboard/dashboard_page.dart';
+import 'package:nexmat/pages/intro/intro_page.dart';
 import 'package:nexmat/pages/login/login_page.dart';
+import 'package:nexmat/utils/shared_preference_helper.dart';
 
 ///
 /// Created by Sunil Kumar from Boiler plate
@@ -23,6 +27,8 @@ class _SplashPageState extends State<SplashPage> {
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       if (FirebaseAuth.instance.currentUser != null) {
         Get.offAllNamed(DashboardPage.routeName);
+      } else if (!SharedPreferenceHelper.firstTime) {
+        Get.offAllNamed(IntroPage.routeName);
       } else {
         Get.offAllNamed(LoginPage.routeName);
       }
@@ -33,19 +39,7 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: const Color(0xff303030),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(child: Image.asset("assets/icons/logo.png", width: 60)),
-            const SizedBox(height: 12),
-            const Text(
-              "A-Plus",
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.w600,
-              ),
-            )
-          ],
-        ));
+        body:
+            Center(child: SvgPicture.asset(AppAssets.splashLogo, width: 130)));
   }
 }

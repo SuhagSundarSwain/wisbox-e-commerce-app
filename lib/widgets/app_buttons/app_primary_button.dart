@@ -57,7 +57,7 @@ class AppPrimaryButtonState extends State<AppPrimaryButton> {
                 minWidth: widget.width ?? 200, minHeight: widget.height ?? 54),
             clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(18),
               boxShadow: <BoxShadow>[
                 if (widget.onPressed != null)
                   BoxShadow(
@@ -95,10 +95,10 @@ class AppPrimaryButtonState extends State<AppPrimaryButton> {
                   elevation: ButtonStyleButton.allOrNull(0),
                   foregroundColor: ButtonStyleButton.allOrNull(Colors.white),
                   textStyle: ButtonStyleButton.allOrNull(
-                    TextStyle(
-                      fontSize: 16,
-                      fontFamily: Environment.fontFamily,
-                    ),
+                    const TextStyle(
+                        fontSize: 18,
+                        fontFamily: Environment.fontFamily,
+                        fontWeight: FontWeight.w800),
                   ),
                   overlayColor: ButtonStyleButton.allOrNull(Colors.black12)),
               // style: ElevatedButton.styleFrom(
