@@ -15,4 +15,9 @@ mixin AppAssets {
   static const String stall = 'assets/icons/stall.png';
 
   static const String addImage = 'assets/icons/add_image.svg';
+  static const String search = 'assets/icons/search.svg';
+  static const String home = 'assets/icons/home.svg';
+  static const String momentIcon = 'assets/icons/moment_icon.svg';
+  static const String notification = 'assets/icons/notification.svg';
+  static const String wallet = 'assets/icons/wallet.svg';
 }
