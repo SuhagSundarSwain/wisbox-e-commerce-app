@@ -20,6 +20,8 @@ class UserDatum {
   String uid;
   String email;
   String name;
+
+  /// 1 Vendor, 2 Customer
   int type;
   DateTime? createdAt;
 

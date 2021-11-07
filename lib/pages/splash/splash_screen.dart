@@ -25,13 +25,15 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-      if (FirebaseAuth.instance.currentUser != null) {
-        Get.offAllNamed(DashboardPage.routeName);
-      } else if (!SharedPreferenceHelper.firstTime) {
-        Get.offAllNamed(IntroPage.routeName);
-      } else {
-        Get.offAllNamed(LoginPage.routeName);
-      }
+      Future.delayed(const Duration(seconds: 3)).then((value) {
+        if (FirebaseAuth.instance.currentUser != null) {
+          Get.offAllNamed(DashboardPage.routeName);
+        } else if (!SharedPreferenceHelper.firstTime) {
+          Get.offAllNamed(IntroPage.routeName);
+        } else {
+          Get.offAllNamed(LoginPage.routeName);
+        }
+      });
     });
   }
 
@@ -40,6 +42,6 @@ class _SplashPageState extends State<SplashPage> {
     return Scaffold(
         backgroundColor: const Color(0xff303030),
         body:
-            Center(child: SvgPicture.asset(AppAssets.splashLogo, width: 130)));
+            Center(child: Image.asset(AppAssets.splashAnimation, width: 200)));
   }
 }

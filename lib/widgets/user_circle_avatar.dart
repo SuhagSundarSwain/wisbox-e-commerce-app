@@ -59,7 +59,7 @@ class AvatarPlaceholder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-      child: Text(firstLetter ?? "", style: const TextStyle(fontSize: 22)),
+      child: Text(firstLetter?[0] ?? "", style: const TextStyle(fontSize: 22)),
       radius: radius,
       backgroundColor: Colors.grey[300],
     );

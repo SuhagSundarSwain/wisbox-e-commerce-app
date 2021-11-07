@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:mapbox_search/mapbox_search.dart';
 import 'package:nexmat/data_models/user.dart';
+import 'package:nexmat/data_models/user_address_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferenceHelper {
@@ -35,12 +36,12 @@ class SharedPreferenceHelper {
       ? null
       : userFromJson(preferences?.getString(USER_KEY) ?? '{}');
 
-  static void storeLocation(MapBoxPlace place) {
-    preferences?.setString(LOCATION_KEY, place.toRawJson());
+  static void storeLocation(UserAddressData place) {
+    preferences?.setString(LOCATION_KEY, userAddressDataToJson(place));
   }
 
-  static MapBoxPlace? get location =>
+  static UserAddressData? get location =>
       preferences?.getString(LOCATION_KEY) == null
           ? null
-          : MapBoxPlace.fromRawJson(preferences!.getString(LOCATION_KEY)!);
+          : userAddressDataFromJson(preferences!.getString(LOCATION_KEY)!);
 }

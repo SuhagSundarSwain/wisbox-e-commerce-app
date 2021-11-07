@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:nexmat/app_configs/app_assets.dart';
+import 'package:nexmat/app_configs/firebase_collections_refs.dart';
 import 'package:nexmat/data_models/rest_error.dart';
 import 'package:nexmat/pages/dashboard/dashboard_page.dart';
 import 'package:nexmat/utils/shared_preference_helper.dart';
@@ -36,6 +37,14 @@ class _OnboardShopDetailsState extends State<OnboardShopDetails> {
   TimeOfDay? _openingTime, _closingTime;
   int? _storeType;
   String? _category;
+
+  late CollectionReference<Map<String, dynamic>> storeCategoriesRef;
+
+  @override
+  void initState() {
+    super.initState();
+    storeCategoriesRef = FirebaseFirestore.instance.collection("StoreCategory");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -173,32 +182,35 @@ class _OnboardShopDetailsState extends State<OnboardShopDetails> {
                 style: TextStyle(fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 12),
-              DropdownButtonFormField<String>(
-                validator: (s) {
-                  if (s == null) {
-                    return '*required';
-                  }
-                },
-                onSaved: (s) {
-                  _category = s;
-                },
-                decoration: const InputDecoration(
-                  labelText: 'Select Category',
-                ),
-                onChanged: (s) {
-                  setState(() {
-                    _category = s;
-                  });
-                },
-                value: _category,
-                items: const [
-                  DropdownMenuItem(child: Text("Grocery"), value: "Grocery"),
-                  DropdownMenuItem(
-                      child: Text("Vegetables"), value: "Vegetables"),
-                  DropdownMenuItem(child: Text("Saloon"), value: "Saloon"),
-                  DropdownMenuItem(
-                      child: Text("Food stall"), value: "Food stall"),
-                ],
+              StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                stream: storeCategoriesRef.snapshots(),
+                builder: (context, snapshot) => snapshot.hasData
+                    ? DropdownButtonFormField<String>(
+                        validator: (s) {
+                          if (s == null) {
+                            return '*required';
+                          }
+                        },
+                        onSaved: (s) {
+                          _category = s;
+                        },
+                        decoration: const InputDecoration(
+                          labelText: 'Select Category',
+                        ),
+                        onChanged: (s) {
+                          setState(() {
+                            _category = s;
+                          });
+                        },
+                        value: _category,
+                        items: snapshot.data!.docs
+                            .map(
+                              (e) => DropdownMenuItem(
+                                  child: Text(e.data()['text']),
+                                  value: e.data()['text'].toString()),
+                            )
+                            .toList())
+                    : const SizedBox(),
               ),
               const SizedBox(height: 12),
               Row(
@@ -300,16 +312,7 @@ class _OnboardShopDetailsState extends State<OnboardShopDetails> {
             if (event.state == TaskState.success) {
               url = await downloadUrl.ref.getDownloadURL();
 
-              await FirebaseFirestore.instance
-                  .collection("CustomerDetails")
-                  .doc(user.email)
-                  .set({
-                "vendorName": user.name,
-                "userUID": user.uid,
-                "userTypeID": user.type,
-                "edited": user.createdAt,
-                "email": user.email,
-                "userType": user.type == 1 ? "Vendor" : "Customer",
+              await FirebaseCollectionRefs.storesRef.doc(user.email).update({
                 "storeName": _storeName,
                 "storeCategory": _category,
                 "storeType": _storeType,

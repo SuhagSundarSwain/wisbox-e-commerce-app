@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:nexmat/app_configs/app_assets.dart';
 import 'package:nexmat/app_configs/environment.dart';
+import 'package:nexmat/app_configs/firebase_collections_refs.dart';
 import 'package:nexmat/data_models/rest_error.dart';
 import 'package:nexmat/data_models/user.dart';
 import 'package:nexmat/pages/dashboard/dashboard_page.dart';
@@ -225,10 +226,7 @@ class _RegisterPageState extends State<RegisterPage> {
               name: _name!,
               type: _isVendor ? 1 : 2,
               createdAt: DateTime.now());
-          await FirebaseFirestore.instance
-              .collection("CustomerDetails")
-              .doc(res.user!.email)
-              .set({
+          await FirebaseCollectionRefs.usersRef.doc(res.user!.email).set({
             "customerName": user.name,
             "userUID": res.user!.uid,
             "userTypeID": user.type,
@@ -259,8 +257,10 @@ class _RegisterPageState extends State<RegisterPage> {
     Get.key.currentState?.push(LoaderOverlay());
     try {
       GoogleSignInAccount? result = await _googleSignIn.signIn();
+
       if (result == null) {
-        return null;
+        Get.key.currentState?.pop();
+        return;
       }
       GoogleSignInAuthentication googleAuth = await result.authentication;
       log('TOKEN ${googleAuth.accessToken}');
@@ -275,12 +275,9 @@ class _RegisterPageState extends State<RegisterPage> {
             uid: res.user!.uid,
             email: res.user!.email ?? "",
             name: res.user!.displayName ?? "",
-            type: 2,
+            type: _isVendor ? 1 : 2,
             createdAt: DateTime.now());
-        await FirebaseFirestore.instance
-            .collection("CustomerDetails")
-            .doc(res.user!.email)
-            .set({
+        await FirebaseCollectionRefs.usersRef.doc(res.user!.email).set({
           "customerName": user.name,
           "userUID": res.user!.uid,
           "userTypeID": user.type,
@@ -288,14 +285,24 @@ class _RegisterPageState extends State<RegisterPage> {
           "email": user.email,
           "userType": user.type == 1 ? "Vendor" : "Customer",
         });
+        if (_isVendor) {
+          await FirebaseCollectionRefs.storesRef.doc(res.user!.email).set({
+            "vendorName": user.name,
+            "userUID": user.uid,
+            "userTypeID": user.type,
+            "edited": user.createdAt,
+            "email": user.email,
+            "userType": user.type == 1 ? "Vendor" : "Customer",
+          });
+        }
         SharedPreferenceHelper.storeUser(user);
         Get.offAllNamed(SelectLocationPage.routeName);
       } else {
-        Get.key.currentState?.maybePop();
+        Get.key.currentState?.pop();
         SnackBarHelper.show("Some error occurred");
       }
     } catch (e, s) {
-      Get.key.currentState?.maybePop();
+      Get.key.currentState?.pop();
       SnackBarHelper.show(parseFirebaseError(e));
       log("message", error: e, stackTrace: s);
     } finally {

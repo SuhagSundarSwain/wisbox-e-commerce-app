@@ -4,10 +4,16 @@ import 'package:nexmat/pages/intro/intro_page.dart';
 import 'package:nexmat/pages/login/login_page.dart';
 import 'package:nexmat/pages/onboarding/onboard_shop_details.dart';
 import 'package:nexmat/pages/onboarding/select_location_page.dart';
+import 'package:nexmat/pages/profile/profile_page.dart';
+import 'package:nexmat/pages/profile/widgets/edit_profile_page.dart';
+import 'package:nexmat/pages/profile/widgets/profile_details_page.dart';
+import 'package:nexmat/pages/profile/widgets/profile_my_saves_page.dart';
 import 'package:nexmat/pages/register/register_otp_verification_page.dart';
 import 'package:nexmat/pages/register/register_page.dart';
 import 'package:nexmat/pages/splash/splash_screen.dart';
 import 'package:nexmat/pages/static/app_webview_page.dart';
+import 'package:nexmat/pages/store/all_nearby_stores.dart';
+import 'package:nexmat/pages/store/store_details_page.dart';
 
 ///
 /// Created by Sunil Kumar from Boiler plate
@@ -30,7 +36,24 @@ class AppPages {
     GetPage(
         name: DashboardPage.routeName,
         page: () => const DashboardPage(),
-        children: const []),
+        children: [
+          GetPage(
+              name: StoreDetailsPage.routeName,
+              page: () => const StoreDetailsPage()),
+          GetPage(
+              name: AllNearByStoresPage.routeName,
+              page: () => const AllNearByStoresPage()),
+          GetPage(name: ProfilePage.routeName, page: () => const ProfilePage()),
+          GetPage(
+              name: ProfileDetailsPage.routeName,
+              page: () => const ProfileDetailsPage()),
+          GetPage(
+              name: EditProfilePage.routeName,
+              page: () => const EditProfilePage()),
+          GetPage(
+              name: ProfileMySavesPage.routeName,
+              page: () => const ProfileMySavesPage()),
+        ]),
     GetPage(name: AppWebViewPage.routeName, page: () => const AppWebViewPage()),
   ];
 }

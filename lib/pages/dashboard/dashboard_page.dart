@@ -1,15 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:nexmat/app_configs/app_assets.dart';
-import 'package:nexmat/pages/dashboard/widgets/home_page.dart';
+import 'package:nexmat/app_configs/firebase_collections_refs.dart';
+import 'package:nexmat/pages/dashboard/home/home_page.dart';
 import 'package:nexmat/pages/dashboard/widgets/moment_icon_page.dart';
 import 'package:nexmat/pages/dashboard/widgets/wallet_page.dart';
-import 'package:nexmat/pages/login/login_page.dart';
-import 'package:nexmat/pages/onboarding/onboard_shop_details.dart';
-import 'package:nexmat/utils/shared_preference_helper.dart';
-import 'package:nexmat/widgets/alert_dialog.dart';
+import 'package:nexmat/pages/profile/profile_page.dart';
 import 'package:nexmat/widgets/user_circle_avatar.dart';
 
 ///
@@ -51,7 +49,7 @@ class _DashboardPageState extends State<DashboardPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               SvgPicture.asset(
-                AppAssets.splashLogo,
+                AppAssets.logo,
                 width: 38,
                 color: Colors.grey,
               ),
@@ -68,23 +66,20 @@ class _DashboardPageState extends State<DashboardPage> {
             IconButton(
                 onPressed: () {},
                 icon: const Icon(Icons.notifications_outlined)),
-            IconButton(
-                onPressed: () {
-                  showAppAlertDialog(
-                          title: "Logout?",
-                          description: "Are you sure want to logout?")
-                      .then((value) {
-                    if (value == true) {
-                      FirebaseAuth.instance.signOut();
-                      SharedPreferenceHelper.logout();
-                      Get.offAllNamed(LoginPage.routeName);
-                    }
-                  });
-                },
-                icon: const Icon(Icons.power_settings_new_rounded)),
-            const UserCircleAvatar(
-              "https://image.freepik.com/free-vector/diwali-festival-nice-yellow-decorative-card-design_1017-34266.jpg",
-              radius: 18,
+            GestureDetector(
+              onTap: () {
+                Get.toNamed(ProfilePage.routeName);
+              },
+              child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                  stream: FirebaseCollectionRefs.userRef.snapshots(),
+                  builder: (context, snapshot) {
+                    return UserCircleAvatar(
+                      snapshot.data?.data()?["image"],
+                      name: snapshot.data?.data()?["customerName"],
+                      userId: snapshot.data?.data()?["userUID"],
+                      radius: 18,
+                    );
+                  }),
             ),
             const SizedBox(width: 8)
           ],

@@ -176,8 +176,10 @@ class _LoginPageState extends State<LoginPage> {
     try {
       GoogleSignInAccount? result = await _googleSignIn.signIn();
       if (result == null) {
-        return null;
+        Get.key.currentState?.pop();
+        return;
       }
+
       GoogleSignInAuthentication googleAuth = await result.authentication;
       log('TOKEN ${googleAuth.accessToken}');
       final credential = GoogleAuthProvider.credential(
@@ -190,14 +192,15 @@ class _LoginPageState extends State<LoginPage> {
         Get.offAllNamed(DashboardPage.routeName);
       } else {
         SnackBarHelper.show("Some error occurred");
-        Get.key.currentState?.maybePop();
+        Get.key.currentState?.pop();
       }
     } catch (e, s) {
-      Get.key.currentState?.maybePop();
+      Get.key.currentState?.pop();
       SnackBarHelper.show(parseFirebaseError(e));
       log("message", error: e, stackTrace: s);
     } finally {
       _googleSignIn.signOut();
     }
+    log('TOKEN }');
   }
 }

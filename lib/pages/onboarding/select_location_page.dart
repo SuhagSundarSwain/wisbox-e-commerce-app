@@ -1,10 +1,14 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mapbox_search/mapbox_search.dart';
 import 'package:nexmat/app_configs/environment.dart';
+import 'package:nexmat/app_configs/firebase_collections_refs.dart';
+import 'package:nexmat/data_models/user_address_data.dart';
+import 'package:nexmat/pages/dashboard/dashboard_page.dart';
 import 'package:nexmat/pages/onboarding/onboard_shop_details.dart';
 import 'package:nexmat/utils/check_permissions.dart';
 import 'package:nexmat/utils/shared_preference_helper.dart';
@@ -29,10 +33,16 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
   Timer? _debounce;
   int _debounceTime = 700;
   String _searchQuery = '';
+  late bool isIndividual = false;
+
   @override
   void initState() {
     super.initState();
     _textEditingController = TextEditingController()..addListener(_textChange);
+    final map = Get.arguments as Map<String, dynamic>?;
+    if (map != null) {
+      isIndividual = map["isIndividual"] ?? false;
+    }
   }
 
   _textChange() {
@@ -68,7 +78,10 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              const SizedBox(height: 42),
+              if (Navigator.canPop(context))
+                const Align(
+                    alignment: Alignment.centerLeft, child: BackButton()),
+              const SizedBox(height: 22),
               const Text(
                 "Let’s Start",
                 style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
@@ -132,12 +145,35 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
   }
 
   _selectLocation(MapBoxPlace place) {
-    SharedPreferenceHelper.storeLocation(place);
-    FirebaseFirestore.instance
-        .collection("CustomerDetails")
-        .doc(SharedPreferenceHelper.user!.email)
-        .update({"address": place.placeName});
-    Get.toNamed(OnboardShopDetails.routeName);
+    final latLng = place.geometry?.coordinates ?? [0, 0];
+    final formattedAddress = place.placeName ?? "";
+
+    final UserAddressData data = UserAddressData(
+        lat: latLng.first,
+        lng: latLng.last,
+        country: extractName(place, "country"),
+        state: extractName(place, "region"),
+        district: extractName(place, "district"),
+        placeName: extractName(place, "place"),
+        locality: extractName(place, "locality"),
+        formattedAddress: formattedAddress);
+    SharedPreferenceHelper.storeLocation(data);
+    FirebaseCollectionRefs.userRef.update(data.toJson());
+    if (SharedPreferenceHelper.user?.type == 1) {
+      FirebaseCollectionRefs.storesRef
+          .doc(SharedPreferenceHelper.user!.email)
+          .update(data.toJson());
+    }
+    if (isIndividual) {
+      Get.back();
+    } else {
+      print(SharedPreferenceHelper.user!.type);
+      if (SharedPreferenceHelper.user!.type == 1) {
+        Get.toNamed(OnboardShopDetails.routeName);
+      } else {
+        Get.offAllNamed(DashboardPage.routeName);
+      }
+    }
   }
 
   Future<List<MapBoxPlace>> placesSearch(String query) async {
@@ -169,5 +205,15 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
       lng: lng,
     ));
     return places ?? [];
+  }
+
+  String extractName(MapBoxPlace place, String key) {
+    if (place.context == null) return "";
+    final index = place.context!.indexWhere(
+        (element) => (element.id ?? ".").split(".").first.toLowerCase() == key);
+    if (index != -1) {
+      return place.context![index].text ?? "";
+    }
+    return "";
   }
 }
