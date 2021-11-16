@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nexmat/utils/shared_preference_helper.dart';
 
 ///
@@ -18,6 +19,10 @@ mixin FirebaseCollectionRefs {
   static CollectionReference<Map<String, dynamic>> storeItemsRef =
       FirebaseFirestore.instance.collection("Item");
 
-  static DocumentReference<Map<String, dynamic>> userRef =
-      usersRef.doc(SharedPreferenceHelper.user!.email);
+  static DocumentReference<Map<String, dynamic>> userRef = usersRef.doc(
+      SharedPreferenceHelper.user?.email ??
+          FirebaseAuth.instance.currentUser?.email);
+
+  static CollectionReference<Map<String, dynamic>> ordersRef =
+      FirebaseFirestore.instance.collection("orders");
 }

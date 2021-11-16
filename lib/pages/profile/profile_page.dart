@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:nexmat/app_configs/app_assets.dart';
 import 'package:nexmat/app_configs/firebase_collections_refs.dart';
 import 'package:nexmat/pages/login/login_page.dart';
+import 'package:nexmat/pages/product/add_product_page.dart';
+import 'package:nexmat/pages/product/vendor_products_page.dart';
 import 'package:nexmat/pages/profile/widgets/edit_profile_page.dart';
 import 'package:nexmat/pages/profile/widgets/profile_details_page.dart';
 import 'package:nexmat/pages/profile/widgets/profile_my_saves_page.dart';
@@ -98,6 +100,30 @@ class _ProfilePageState extends State<ProfilePage> {
                 title: const Text("My profile"),
                 leading: SvgPicture.asset(AppAssets.person, width: 16)),
           ),
+          if (SharedPreferenceHelper.user?.type == 2) ...[
+            Card(
+              elevation: 2,
+              clipBehavior: Clip.antiAlias,
+              margin: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+              child: ListTile(
+                  onTap: () {
+                    Get.toNamed(AddProductPage.routeName);
+                  },
+                  title: const Text("Add Product"),
+                  leading: SvgPicture.asset(AppAssets.person, width: 16)),
+            ),
+            Card(
+              elevation: 2,
+              clipBehavior: Clip.antiAlias,
+              margin: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+              child: ListTile(
+                  onTap: () {
+                    Get.toNamed(VendorProductsPage.routeName);
+                  },
+                  title: const Text("My Product"),
+                  leading: SvgPicture.asset(AppAssets.person, width: 16)),
+            )
+          ],
           Card(
             elevation: 2,
             clipBehavior: Clip.antiAlias,

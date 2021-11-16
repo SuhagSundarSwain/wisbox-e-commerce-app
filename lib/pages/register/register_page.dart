@@ -12,7 +12,7 @@ import 'package:nexmat/app_configs/environment.dart';
 import 'package:nexmat/app_configs/firebase_collections_refs.dart';
 import 'package:nexmat/data_models/rest_error.dart';
 import 'package:nexmat/data_models/user.dart';
-import 'package:nexmat/pages/dashboard/dashboard_page.dart';
+import 'package:nexmat/pages/dashboard/user_dashboard_page.dart';
 import 'package:nexmat/pages/onboarding/select_location_page.dart';
 import 'package:nexmat/pages/register/register_page.dart';
 import 'package:nexmat/utils/shared_preference_helper.dart';

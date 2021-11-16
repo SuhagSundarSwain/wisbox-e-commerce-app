@@ -9,7 +9,8 @@ import 'package:get/get.dart';
 import 'package:nexmat/app_configs/app_assets.dart';
 import 'package:nexmat/app_configs/firebase_collections_refs.dart';
 import 'package:nexmat/data_models/rest_error.dart';
-import 'package:nexmat/pages/dashboard/dashboard_page.dart';
+import 'package:nexmat/pages/dashboard/user_dashboard_page.dart';
+import 'package:nexmat/pages/vendor_dashboard/vendor_dashboard_page.dart';
 import 'package:nexmat/utils/shared_preference_helper.dart';
 import 'package:nexmat/utils/snackbar_helper.dart';
 import 'package:nexmat/widgets/app_buttons/app_primary_button.dart';
@@ -289,8 +290,6 @@ class _OnboardShopDetailsState extends State<OnboardShopDetails> {
     if (state.validate()) {
       if (_storeImage == null) {
         SnackBarHelper.show("Please select a store image.");
-      } else if (_storeImage == null) {
-        SnackBarHelper.show("Please select a store image.");
       } else if (_openingTime == null) {
         SnackBarHelper.show("Please choose opening time.");
       } else if (_closingTime == null) {
@@ -322,7 +321,7 @@ class _OnboardShopDetailsState extends State<OnboardShopDetails> {
                 "image": url
               });
               _btnKey.currentState?.hideLoader();
-              Get.offAllNamed(DashboardPage.routeName);
+              Get.offAllNamed(VendorDashboardPage.routeName);
             }
           });
         } catch (e, s) {

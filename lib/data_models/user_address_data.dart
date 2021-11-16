@@ -37,14 +37,14 @@ class UserAddressData {
 
   factory UserAddressData.fromJson(Map<String, dynamic> json) =>
       UserAddressData(
-        lat: json["lat"].toDouble(),
-        lng: json["lng"].toDouble(),
-        country: json["country"],
-        state: json["state"],
-        district: json["district"],
-        placeName: json["placeName"],
-        locality: json["locality"],
-        formattedAddress: json["formattedAddress"],
+        lat: (json["lat"] ?? 0).toDouble(),
+        lng: (json["lng"] ?? 0).toDouble(),
+        country: json["country"] ?? "",
+        state: json["state"] ?? "",
+        district: json["district"] ?? "",
+        placeName: json["placeName"] ?? "",
+        locality: json["locality"] ?? "",
+        formattedAddress: json["formattedAddress"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {

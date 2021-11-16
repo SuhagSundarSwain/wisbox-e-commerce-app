@@ -8,7 +8,7 @@ import 'package:mapbox_search/mapbox_search.dart';
 import 'package:nexmat/app_configs/environment.dart';
 import 'package:nexmat/app_configs/firebase_collections_refs.dart';
 import 'package:nexmat/data_models/user_address_data.dart';
-import 'package:nexmat/pages/dashboard/dashboard_page.dart';
+import 'package:nexmat/pages/dashboard/user_dashboard_page.dart';
 import 'package:nexmat/pages/onboarding/onboard_shop_details.dart';
 import 'package:nexmat/utils/check_permissions.dart';
 import 'package:nexmat/utils/shared_preference_helper.dart';
@@ -167,7 +167,6 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
     if (isIndividual) {
       Get.back();
     } else {
-      print(SharedPreferenceHelper.user!.type);
       if (SharedPreferenceHelper.user!.type == 1) {
         Get.toNamed(OnboardShopDetails.routeName);
       } else {

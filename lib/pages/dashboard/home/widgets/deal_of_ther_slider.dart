@@ -52,7 +52,12 @@ class DealOfTheDaySlider extends StatelessWidget {
 }
 
 class DealOfDayProduct extends StatelessWidget {
-  const DealOfDayProduct({Key? key}) : super(key: key);
+  final String? image;
+  final String? name;
+  final String? price;
+
+  const DealOfDayProduct({Key? key, this.image, this.price, this.name})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +73,8 @@ class DealOfDayProduct extends StatelessWidget {
               child: Stack(children: [
             Positioned.fill(
                 child: Image.network(
-              "https://images.pexels.com/photos/3987333/pexels-photo-3987333.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+              image ??
+                  "https://images.pexels.com/photos/3987333/pexels-photo-3987333.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
               fit: BoxFit.cover,
             )),
             Positioned(
@@ -100,17 +106,19 @@ class DealOfDayProduct extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
             child: Row(
-              children: const [
+              children: [
                 Expanded(
                   child: Text(
-                    "Tokyo Talkies",
+                    name ?? "",
                     maxLines: 1,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                 ),
                 Text(
-                  "₹ 440",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  "₹ ${price ?? ""}",
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w600),
                 ),
               ],
             ),

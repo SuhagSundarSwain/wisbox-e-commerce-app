@@ -40,50 +40,6 @@ class _DashboardPageState extends State<DashboardPage> {
         }
       },
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: theme.scaffoldBackgroundColor,
-          elevation: 0,
-          iconTheme: IconThemeData(color: theme.primaryColor),
-          actionsIconTheme: IconThemeData(color: theme.primaryColor),
-          title: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SvgPicture.asset(
-                AppAssets.logo,
-                width: 38,
-                color: Colors.grey,
-              ),
-              const SizedBox(width: 10),
-              Text(
-                "NEXTMAT",
-                style: TextStyle(
-                    color: theme.primaryColor, fontWeight: FontWeight.w500),
-              ),
-            ],
-          ),
-          actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
-            IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.notifications_outlined)),
-            GestureDetector(
-              onTap: () {
-                Get.toNamed(ProfilePage.routeName);
-              },
-              child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                  stream: FirebaseCollectionRefs.userRef.snapshots(),
-                  builder: (context, snapshot) {
-                    return UserCircleAvatar(
-                      snapshot.data?.data()?["image"],
-                      name: snapshot.data?.data()?["customerName"],
-                      userId: snapshot.data?.data()?["userUID"],
-                      radius: 18,
-                    );
-                  }),
-            ),
-            const SizedBox(width: 8)
-          ],
-        ),
         body: [
           const HomePage(),
           const MomentIconPage(),

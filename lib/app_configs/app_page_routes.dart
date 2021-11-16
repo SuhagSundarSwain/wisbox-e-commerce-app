@@ -1,5 +1,9 @@
 import 'package:get/get.dart';
-import 'package:nexmat/pages/dashboard/dashboard_page.dart';
+import 'package:nexmat/pages/dashboard/user_dashboard_page.dart';
+import 'package:nexmat/pages/product/add_product_page.dart';
+import 'package:nexmat/pages/product/product_details_page.dart';
+import 'package:nexmat/pages/product/vendor_products_page.dart';
+import 'package:nexmat/pages/vendor_dashboard/vendor_dashboard_page.dart';
 import 'package:nexmat/pages/intro/intro_page.dart';
 import 'package:nexmat/pages/login/login_page.dart';
 import 'package:nexmat/pages/onboarding/onboard_shop_details.dart';
@@ -33,6 +37,16 @@ class AppPages {
     GetPage(
         name: SelectLocationPage.routeName,
         page: () => const SelectLocationPage()),
+    GetPage(
+        name: VendorDashboardPage.routeName,
+        page: () => const VendorDashboardPage()),
+    GetPage(name: AddProductPage.routeName, page: () => const AddProductPage()),
+    GetPage(
+        name: ProductDetailsPage.routeName,
+        page: () => const ProductDetailsPage()),
+    GetPage(
+        name: VendorProductsPage.routeName,
+        page: () => const VendorProductsPage()),
     GetPage(
         name: DashboardPage.routeName,
         page: () => const DashboardPage(),

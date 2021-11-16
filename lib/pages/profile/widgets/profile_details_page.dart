@@ -79,7 +79,7 @@ class ProfileDetailsPage extends StatelessWidget {
                     const SizedBox(width: 4),
                     Expanded(
                         child: Text(
-                      snapshot.data!.data()!["email"] ?? "",
+                      snapshot.data?.data()?["email"] ?? "",
                       style: const TextStyle(
                           color: Color(0xff808080), fontSize: 16),
                     ))
@@ -102,7 +102,7 @@ class ProfileDetailsPage extends StatelessWidget {
                     const SizedBox(width: 4),
                     Expanded(
                         child: Text(
-                      snapshot.data!.data()!["phNumber"] ?? "",
+                      snapshot.data?.data()?["phNumber"] ?? "",
                       style: const TextStyle(
                           color: Color(0xff808080), fontSize: 16),
                     ))

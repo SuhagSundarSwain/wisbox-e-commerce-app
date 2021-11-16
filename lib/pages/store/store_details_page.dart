@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:nexmat/app_configs/firebase_collections_refs.dart';
 import 'package:nexmat/data_models/rest_error.dart';
 import 'package:nexmat/pages/dashboard/home/widgets/deal_of_ther_slider.dart';
+import 'package:nexmat/pages/product/product_details_page.dart';
+import 'package:nexmat/pages/profile/widgets/profile_details_page.dart';
 import 'package:nexmat/pages/store/widgets/store_deatils_slider.dart';
 import 'package:nexmat/widgets/app_error_widget.dart';
 import 'package:nexmat/widgets/app_loader.dart';
@@ -93,14 +95,39 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
                     Container(
                       height: 240,
                       color: const Color(0xffa880ff),
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: const [
-                          DealOfDayProduct(),
-                          DealOfDayProduct(),
-                          DealOfDayProduct(),
-                          DealOfDayProduct(),
-                        ],
+                      child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                        stream:
+                            FirebaseCollectionRefs.storeItemsRef.snapshots(),
+                        builder: (context, s) {
+                          if (s.hasData) {
+                            final list = s.data?.docs
+                                .where((element) =>
+                                    element.data()["store"] ==
+                                    snapshot.data?.data()?["userUID"])
+                                .toList();
+                            if (list == null || list.isEmpty) {
+                              return const AppEmptyWidget(title: "No products");
+                            }
+                            return ListView.builder(
+                                padding: const EdgeInsets.only(left: 16),
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Get.toNamed(ProductDetailsPage.routeName,
+                                          arguments: {"id": list[index].id});
+                                    },
+                                    child: DealOfDayProduct(
+                                        image: list[index].data()["image"],
+                                        name: list[index].data()["name"],
+                                        price: list[index].data()["price"]),
+                                  );
+                                },
+                                itemCount: list.length);
+                          } else {
+                            return const Center(child: AppProgress());
+                          }
+                        },
                       ),
                     )
                   ],
