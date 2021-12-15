@@ -49,6 +49,7 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
         iconTheme: IconThemeData(color: theme.primaryColor),
         actionsIconTheme: IconThemeData(color: theme.primaryColor),
+        centerTitle: false,
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -59,17 +60,15 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(width: 10),
             Text(
-              "NEXTMAT",
+              "NEXMAT",
               style: TextStyle(
                   color: theme.primaryColor, fontWeight: FontWeight.w500),
             ),
           ],
         ),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
           IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.notifications_outlined)),
+              onPressed: () {}, icon: const Icon(Icons.notifications_outlined)),
           GestureDetector(
             onTap: () {
               Get.toNamed(ProfilePage.routeName);
@@ -122,6 +121,24 @@ class _HomePageState extends State<HomePage> {
                   arguments: {"isIndividual": true});
             },
             leading: const Icon(Icons.location_on),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Material(
+              color: const Color(0xa4e2e1ff),
+              clipBehavior: Clip.antiAlias,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6)),
+              child: InkWell(
+                onTap: () {},
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [Icon(Icons.search), Text("Search")],
+                  ),
+                ),
+              ),
+            ),
           ),
           const MostTrendingStoreTile(),
           const SizedBox(height: 16),

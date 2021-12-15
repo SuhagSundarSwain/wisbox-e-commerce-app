@@ -43,106 +43,122 @@ class _LoginPageState extends State<LoginPage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: SafeArea(
-        child: Form(
-          key: _formKey,
-          autovalidateMode: _autovalidateMode,
-          child: ListView(
-            padding: const EdgeInsets.all(22),
-            children: [
-              SizedBox(height: height / 4),
-              const Text(
-                "Log In",
-                style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
+      resizeToAvoidBottomInset: false,
+      body: Stack(
+        children: [
+          Positioned(
+              right: 0, top: 0, child: SvgPicture.asset(AppAssets.loginBgTop)),
+          Positioned(
+              left: 0,
+              bottom: 0,
+              child: SvgPicture.asset(AppAssets.loginBgBottom)),
+          Positioned.fill(
+            child: SafeArea(
+              child: Form(
+                key: _formKey,
+                autovalidateMode: _autovalidateMode,
+                child: ListView(
+                  padding: const EdgeInsets.all(22),
+                  children: [
+                    SizedBox(height: height / 4),
+                    const Text(
+                      "Log In",
+                      style:
+                          TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
+                    ),
+                    const SizedBox(height: 12),
+                    TextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.next,
+                      onFieldSubmitted: (s) => Get.focusScope?.nextFocus(),
+                      onSaved: (s) {
+                        _email = s?.trim();
+                      },
+                      validator: (s) {
+                        if (s == null || s.trim().isEmpty) {
+                          return '*required';
+                        } else {
+                          if (!GetUtils.isEmail(s.trim())) {
+                            return 'Not a valid email id.';
+                          }
+                        }
+                      },
+                      decoration: const InputDecoration(labelText: 'Email Id'),
+                    ),
+                    const SizedBox(height: 12),
+                    TextFormField(
+                      obscureText: _obscureText,
+                      validator: (s) {
+                        if (s == null || s.trim().isEmpty) {
+                          return '*required';
+                        }
+                      },
+                      textInputAction: TextInputAction.done,
+                      onFieldSubmitted: (s) => _login(),
+                      keyboardType: TextInputType.visiblePassword,
+                      onSaved: (s) {
+                        _password = s?.trim();
+                      },
+                      decoration: InputDecoration(
+                          labelText: 'Password',
+                          suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _obscureText = !_obscureText;
+                                });
+                              },
+                              icon: Icon(_obscureText
+                                  ? Icons.visibility
+                                  : Icons.visibility_off))),
+                    ),
+                    const SizedBox(height: 32),
+                    AppPrimaryButton(
+                      child: const Text("Log In"),
+                      onPressed: _login,
+                      key: _btnKey,
+                    ),
+                    const SizedBox(height: 38),
+                    const Center(
+                        child: Text(
+                      "- Or LogIn with -",
+                      style: TextStyle(color: Colors.grey),
+                    )),
+                    const SizedBox(height: 14),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                            onTap: signInWithGoogle,
+                            child: SvgPicture.asset(AppAssets.google)),
+                        const SizedBox(width: 16),
+                        GestureDetector(
+                            onTap: () {},
+                            child: SvgPicture.asset(AppAssets.facebook)),
+                      ],
+                    ),
+                    const SizedBox(height: 22),
+                    Center(
+                      child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                              style: theme.textTheme.bodyText1,
+                              children: [
+                                const TextSpan(text: 'Don’t have an account?'),
+                                TextSpan(
+                                    text: ' Sign up',
+                                    style: const TextStyle(color: Colors.grey),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        Get.toNamed(RegisterPage.routeName);
+                                      }),
+                              ])),
+                    )
+                  ],
+                ),
               ),
-              const SizedBox(height: 12),
-              TextFormField(
-                keyboardType: TextInputType.emailAddress,
-                textInputAction: TextInputAction.next,
-                onFieldSubmitted: (s) => Get.focusScope?.nextFocus(),
-                onSaved: (s) {
-                  _email = s?.trim();
-                },
-                validator: (s) {
-                  if (s == null || s.trim().isEmpty) {
-                    return '*required';
-                  } else {
-                    if (!GetUtils.isEmail(s.trim())) {
-                      return 'Not a valid email id.';
-                    }
-                  }
-                },
-                decoration: const InputDecoration(labelText: 'Email Id'),
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                obscureText: _obscureText,
-                validator: (s) {
-                  if (s == null || s.trim().isEmpty) {
-                    return '*required';
-                  }
-                },
-                textInputAction: TextInputAction.done,
-                onFieldSubmitted: (s) => _login(),
-                keyboardType: TextInputType.visiblePassword,
-                onSaved: (s) {
-                  _password = s?.trim();
-                },
-                decoration: InputDecoration(
-                    labelText: 'Password',
-                    suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            _obscureText = !_obscureText;
-                          });
-                        },
-                        icon: Icon(_obscureText
-                            ? Icons.visibility
-                            : Icons.visibility_off))),
-              ),
-              const SizedBox(height: 32),
-              AppPrimaryButton(
-                child: const Text("Log In"),
-                onPressed: _login,
-                key: _btnKey,
-              ),
-              const SizedBox(height: 38),
-              const Center(
-                  child: Text(
-                "- Or LogIn with -",
-                style: TextStyle(color: Colors.grey),
-              )),
-              const SizedBox(height: 14),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                      onTap: signInWithGoogle,
-                      child: SvgPicture.asset(AppAssets.google)),
-                  const SizedBox(width: 16),
-                  GestureDetector(
-                      onTap: () {},
-                      child: SvgPicture.asset(AppAssets.facebook)),
-                ],
-              ),
-              const SizedBox(height: 22),
-              Center(
-                child: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(style: theme.textTheme.bodyText1, children: [
-                      const TextSpan(text: 'Don’t have an account?'),
-                      TextSpan(
-                          text: ' Sign up',
-                          style: const TextStyle(color: Colors.grey),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              Get.toNamed(RegisterPage.routeName);
-                            }),
-                    ])),
-              )
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -157,10 +173,11 @@ class _LoginPageState extends State<LoginPage> {
         final res = await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: _email!, password: _password!);
         if (res.user != null) {
-          final userData = await FirebaseCollectionRefs.usersRef.doc(_email).get();
-          if(userData.data()?["userTypeID"]==1){
+          final userData =
+              await FirebaseCollectionRefs.usersRef.doc(_email).get();
+          if (userData.data()?["userTypeID"] == 1) {
             Get.offAllNamed(VendorDashboardPage.routeName);
-          }else{
+          } else {
             Get.offAllNamed(DashboardPage.routeName);
           }
         } else {
@@ -198,20 +215,21 @@ class _LoginPageState extends State<LoginPage> {
 
       final res = await FirebaseAuth.instance.signInWithCredential(credential);
       if (res.user != null) {
-        final userData = await FirebaseCollectionRefs.usersRef.doc(_email).get();
+        final userData =
+            await FirebaseCollectionRefs.usersRef.doc(_email).get();
         if (SharedPreferenceHelper.location == null) {
           Get.toNamed(SelectLocationPage.routeName,
               arguments: {"isIndividual": true})?.then((value) {
-            if(userData.data()?["userTypeID"]==1){
+            if (userData.data()?["userTypeID"] == 1) {
               Get.offAllNamed(VendorDashboardPage.routeName);
-            }else{
+            } else {
               Get.offAllNamed(DashboardPage.routeName);
             }
           });
         } else {
-          if(userData.data()?["userTypeID"]==1){
+          if (userData.data()?["userTypeID"] == 1) {
             Get.offAllNamed(VendorDashboardPage.routeName);
-          }else{
+          } else {
             Get.offAllNamed(DashboardPage.routeName);
           }
         }

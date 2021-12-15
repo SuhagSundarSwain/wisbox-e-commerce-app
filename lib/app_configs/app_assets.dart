@@ -27,4 +27,10 @@ mixin AppAssets {
   static const String helpSupport = 'assets/icons/help_support.svg';
   static const String settings = 'assets/icons/settings.svg';
   static const String logout = 'assets/icons/logout.svg';
+
+  static const String letsStartTop = 'assets/icons/lets_start_top.svg';
+  static const String loginBgBottom = 'assets/icons/login_bg_bottom.svg';
+  static const String loginBgTop = 'assets/icons/login_bg_top.svg';
+  static const String signUpBgBottom = 'assets/icons/sign_up_bg_bottom.svg';
+  static const String signUpBgTop = 'assets/icons/sign_up_bg_top.svg';
 }
